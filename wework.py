@@ -6,13 +6,10 @@
 
 import json
 
-import redis
 import requests
 
-from config import *
-
-pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, password=REDIS_PASSWORD)
-r = redis.Redis(connection_pool=pool)
+from config import QUEUE, CORP_ID, APP_SECRET, APP_AGENT_ID
+from database import r
 
 
 def verify_response(body: dict):

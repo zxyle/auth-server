@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import jsonify, request, make_response
 
-from config import *
+from config import ENTRY_DEFAULT_PWD
 from encrypt import encrypt
 from ldap_operate import EntryDict, LDAP
 from wework import AccessToken, WeWorkUser

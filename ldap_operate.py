@@ -15,7 +15,7 @@ from collections import OrderedDict
 import ldap
 import ldap.modlist as mod_list
 
-from config import *
+from config import LDAP_URI, LDAP_BIND_PWD, LDAP_BASE_DN
 
 
 class EntryDict(OrderedDict):
