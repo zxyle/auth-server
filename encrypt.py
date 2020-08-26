@@ -1,6 +1,6 @@
 """
 ================
-加密解密功能 预开发准备
+Encryption and decryption module
 ================
 """
 
@@ -11,21 +11,21 @@ import hashlib
 
 def get_hash_method(algor):
     """
-    获取哈希方法
-    :param algor: 哈希算法名称 类似md5 sha1
+    Get the hash method
+    :param algor: Hash algorithm, such as md5 sha1
     :return:
     """
     try:
         return getattr(hashlib, algor)
     except AssertionError:
-        print(f"无{algor}哈希算法.")
+        print(f"There is no {algor} hash algorithm.")
 
 
 def checksum(method, raw):
     """
-    计算hash
-    :param method: 哈希方法
-    :param raw: 待加密文本
+    Calculate hash
+    :param method: Hash method
+    :param raw: Text to be encrypted
     :return:
     """
     m = method()
@@ -35,25 +35,22 @@ def checksum(method, raw):
 
 def encrypt(raw, algor="md5"):
     """
-    LDAP 格式加密
-    :param raw: 密码原文
-    :param algor: 哈希算法名称
+    LDAP format encryption
+    :param raw: Original password
+    :param algor: Hash algorithm name
     :return:
     """
-    # 已加密串
     encrypted = checksum(get_hash_method(algor), raw)
-    # ascii码加密串
     binascii_string = binascii.a2b_hex(encrypted)
-    # base64加密串
     b64_string = base64.b64encode(binascii_string).decode()
     return "{%s}%s" % (algor.upper(), b64_string)
 
 
 def decrypt(pwd, algor="md5"):
     """
-    LDAP 格式解密
-    :param pwd: 密码密文
-    :param algor: 哈希算法名称
+    LDAP format decryption
+    :param pwd: Ciphertext
+    :param algor: Hash algorithm name
     :return:
     """
     old = "{%s}" % algor.upper()
