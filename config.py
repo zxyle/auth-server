@@ -1,26 +1,24 @@
-# 配置文件
+# Configuration file
 
 
-# redis配置信息
-REDIS_HOST = "192.168.1.172"
+# redis configuration info
+REDIS_HOST = "127.0.0.1"
 REDIS_PORT = 6379
 REDIS_DB = 0
-REDIS_PASSWORD = "wuwei2020"
+REDIS_PASSWORD = None
 
-# 存储access_token的 redis key
+# Store the redis key of access_token
 QUEUE = "access_token"
 
-# 企业微信应用有关参数 (在应用页面可以查看)
+# Wework application related parameters (can be viewed on the application page)
 APP_AGENT_ID = 1000002
-APP_SECRET = "aVnPGVXbqF5l3locxT0ktX0AZiwiML0_ORTrBh0OgYQ"
+APP_SECRET = ""
 
-# 企业id (在我的企业页面最下面)
-CORP_ID = "ww433d03f29429ce75"
+# wework corp id
+CORP_ID = ""
 
-# LDAP配置信息
+# LDAP configuration information
 LDAP_URI = "ldap://192.168.1.193:389"
 LDAP_BASE_DN = "cn=admin,dc=example,dc=org"
 LDAP_BIND_PWD = "admin"
-
-# LDAP账号默认密码
 ENTRY_DEFAULT_PWD = "123456"
