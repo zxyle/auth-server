@@ -14,7 +14,7 @@ wework_user = WeWorkUser()
 
 @app.route('/login', methods=['POST'])
 def login():
-    """普通登录"""
+    """Normal login"""
     uid = request.form.get("uid")
     pwd = request.form.get("pwd")
 
@@ -24,16 +24,16 @@ def login():
     }
     users = ldap.query_params(params)
     if not users:
-        return "用户名或密码错误."
+        return "wrong username or password."
 
-    body = make_response("登录成功.")
+    body = make_response("login successful.")
     body.set_cookie("uid", uid, max_age=3600)
     return body
 
 
 @app.route('/mail_login', methods=['POST'])
 def mail_login():
-    """通过邮箱登录"""
+    """Login via email"""
     mail = request.form.get("mail")
     pwd = request.form.get("pwd")
 
@@ -43,16 +43,15 @@ def mail_login():
     }
     users = ldap.query_params(params)
     if not users:
-        return "邮箱或密码错误."
+        return "Mail or password is incorrect."
 
-    body = make_response("登录成功.")
+    body = make_response("login successful.")
     body.set_cookie("mail", mail, max_age=3600)
     return body
 
 
 @app.route('/logout')
 def logout():
-    """登出"""
     body = make_response("logout.")
     body.delete_cookie("uid")
     return body
@@ -60,7 +59,7 @@ def logout():
 
 @app.route('/change_pwd', methods=["POST"])
 def change_pwd():
-    """修改密码"""
+    """change password"""
     uid = request.form.get("uid")
     pwd = request.form.get("pwd")
 
@@ -73,26 +72,27 @@ def change_pwd():
 
 @app.route('/add', methods=["POST"])
 def add_uid():
-    """添加用户"""
-    # 姓名拼音
+    """Add user"""
+    # Pinyin of name
     uid = request.form.get("uid")
-    # 姓名中文
+    # Name Chinese
     given_name = request.form.get("given_name")
-    # 性别(1为男性 2为女性)
+    # Gender (1 is male and 2 is female)
     gender = request.form.get("gender")
-    # 工号
+    # Job number
     uid_number = request.form.get("uid_number")
-    # 邮箱
+    # Email
     mail = request.form.get("mail")
-    # 手机号
+    # phone number
     mobile = request.form.get("mobile")
-    # 部门编号
+    # Department Number
     department = request.form.get("department", "1")
-    # 500：技术部；501：行政人事；502：产品部；503：运营部；504：客服部；505：管理部；506：金融部；507：财务部；508：公关部
+    # Group 
     gid_number = request.form.get("gid_number")
-    # 入职日期 格式：2018-05-20
+    # Entry Date Format: 2018-05-20
     employee_type = request.form.get("employee_type")
-    # 企业微信上增加该用户
+
+    # add this user on wework
     form = {
         "userid": uid,
         "name": given_name,
@@ -105,7 +105,7 @@ def add_uid():
     if json_body.get("errcode") != 0:
         return jsonify(json_body)
 
-    # LDAP上增加该用户
+    # Add the user on LDAP
     entry = EntryDict()
     entry["cn"] = uid
     entry["sn"] = uid
@@ -120,7 +120,7 @@ def add_uid():
     entry["loginShell"] = "/bin/sh"
     entry["userPassword"] = encrypt(ENTRY_DEFAULT_PWD)
     entry["employeeType"] = employee_type
-    # 不支持键值对
+    # The following key-value pairs are not supported
     # entry["gender"] = gender
     # entry["sambaNTPassword"] = ""
     result = ldap.add_user(entry)
@@ -136,12 +136,12 @@ def add_uid():
 
 @app.route('/del')
 def del_uid():
-    """通过uid删除用户"""
+    """Delete user by uid"""
     uid = request.args.get("uid")
-    # 删除企业微信上该uid
+    # Delete the uid on wework
     json_body = wework_user.delete(uid)
 
-    # 删除LDAP上该uid
+    # Delete the uid on LDAP
     result = ldap.del_user(uid)
 
     body = {
@@ -155,11 +155,10 @@ def del_uid():
 
 @app.route('/search')
 def search_uid():
-    """查找"""
     uid = request.args.get("uid")
     users = ldap.query_by_uid(uid)
     if not users:
-        return "不存在该uid."
+        return "The uid does not exist."
 
     entry = users[0]
     info = {
