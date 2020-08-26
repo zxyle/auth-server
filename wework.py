@@ -1,9 +1,3 @@
-"""
-================
-企业微信功能 预开发准备
-================
-"""
-
 import json
 
 import requests
@@ -17,19 +11,19 @@ def verify_response(body: dict):
 
 
 class AccessToken:
-    # 存储access_token的redis键名
+    # The redis key name that stores the access_token
     token_queue = QUEUE
 
-    # 获取token接口
+    # Get the token interface
     token_url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken"
 
-    # 最短有效期(单位: 秒)
+    # Minimum validity period (unit: second)
     min_period = 1 * 60
 
     def _generate(self):
         """
-        重新生成access_token并存储到redis
-        文档地址: https://work.weixin.qq.com/api/doc/90000/90135/91039
+        Regenerate access_token and store in redis
+        Document link: https://work.weixin.qq.com/api/doc/90000/90135/91039
         :return:
         """
         params = {
@@ -50,9 +44,9 @@ class AccessToken:
 
     def _update_value(self, value, ttl):
         """
-        更新操作
-        :param value: 值
-        :param ttl: 过期时间(单位: 秒)
+        Update access token
+        :param value: 
+        :param ttl:
         :return:
         """
         r.set(self.token_queue, value)
@@ -63,7 +57,7 @@ class AccessToken:
 
     def get_access_token(self):
         """
-        获取一个可用的access_token
+        Get a usable access token
         :return:
         """
         if r.exists(self.token_queue) and \
@@ -75,13 +69,13 @@ class AccessToken:
 
 
 class WeWorkUser:
-    """企业微信通讯录管理"""
+    """Wework user management"""
     token = AccessToken()
 
     def create(self, user):
         """
-        企业微信创建成员
-        文档地址: https://work.weixin.qq.com/api/doc/90000/90135/90195
+        Create member
+        Document link: https://work.weixin.qq.com/api/doc/90000/90135/90195
         :param user:
         :return:
         """
@@ -90,14 +84,13 @@ class WeWorkUser:
             "access_token": self.token.get_access_token(),
         }
 
-        # 为什么这么写? 解决创建用户使用中文到企业微信后台却显示Unicode
         body = json.dumps(user, ensure_ascii=False).encode("utf-8")
         return requests.post(url, params=params, data=body).json()
 
     def get(self, uid):
         """
-        企业微信读取成员
-        文档地址: https://work.weixin.qq.com/api/doc/90000/90135/90196
+        Read member
+        Document link: https://work.weixin.qq.com/api/doc/90000/90135/90196
         :param uid:
         :return:
         """
@@ -110,8 +103,8 @@ class WeWorkUser:
 
     def update(self):
         """
-        企业微信更新成员
-        文档地址: https://work.weixin.qq.com/api/doc/90000/90135/90197
+        Update member
+        Document link: https://work.weixin.qq.com/api/doc/90000/90135/90197
         :return:
         """
         url = "https://qyapi.weixin.qq.com/cgi-bin/user/update"
@@ -125,8 +118,8 @@ class WeWorkUser:
 
     def delete(self, uid):
         """
-        企业微信删除成员
-        文档地址: https://work.weixin.qq.com/api/doc/90000/90135/90198
+        Delete member
+        Document link: https://work.weixin.qq.com/api/doc/90000/90135/90198
         :param uid:
         :return:
         """
@@ -139,14 +132,14 @@ class WeWorkUser:
 
 
 class WeWorkDepartment:
-    """企业微信部门管理"""
+    """Wework department management"""
     token = AccessToken()
 
     def create(self, name):
         """
-        创建部门
-        文档地址: https://work.weixin.qq.com/api/doc/90000/90135/90205
-        :param name: 部门名称
+        
+        Document link: https://work.weixin.qq.com/api/doc/90000/90135/90205
+        :param name: Department name
         :return:
         """
         url = "https://qyapi.weixin.qq.com/cgi-bin/department/create"
@@ -165,9 +158,9 @@ class WeWorkDepartment:
 
     def update(self, dep_id):
         """
-        更新部门
-        文档地址: https://work.weixin.qq.com/api/doc/90000/90135/90206
-        :param dep_id: 部门id
+        
+        Document link: https://work.weixin.qq.com/api/doc/90000/90135/90206
+        :param dep_id: Department id
         :return:
         """
         url = "https://qyapi.weixin.qq.com/cgi-bin/department/update"
@@ -176,7 +169,7 @@ class WeWorkDepartment:
         }
         form = {
             "id": dep_id,
-            "name": "XXX研发中心",
+            "name": "XXX R&D Center",
             "name_en": "",
             "parentid": 1,
             "order": 1
@@ -186,9 +179,9 @@ class WeWorkDepartment:
 
     def delete(self, dep_id):
         """
-        删除部门
-        文档地址: https://work.weixin.qq.com/api/doc/90000/90135/90207
-        :param dep_id: 部门id
+        
+        Document link: https://work.weixin.qq.com/api/doc/90000/90135/90207
+        :param dep_id: Department id
         :return:
         """
         url = "https://qyapi.weixin.qq.com/cgi-bin/department/delete"
@@ -200,8 +193,8 @@ class WeWorkDepartment:
 
     def list(self):
         """
-        获取部门列表
-        文档地址: https://work.weixin.qq.com/api/doc/90000/90135/90208
+        Get department list
+        Document link: https://work.weixin.qq.com/api/doc/90000/90135/90208
         :return:
         """
         url = "https://qyapi.weixin.qq.com/cgi-bin/department/list"
@@ -214,10 +207,10 @@ class WeWorkDepartment:
 
 def send_msg(access_token, msg):
     """
-    发送应用消息
-    文档地址: https://open.work.weixin.qq.com/api/doc/90000/90135/90236
+    Send application message
+    Document link: https://open.work.weixin.qq.com/api/doc/90000/90135/90236
     :param access_token:
-    :param msg: 待发送的消息
+    :param msg: 
     :return:
     """
     url = "https://qyapi.weixin.qq.com/cgi-bin/message/send"
