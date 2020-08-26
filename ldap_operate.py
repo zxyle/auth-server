@@ -1,14 +1,7 @@
-"""
-================
-LDAP功能 预开发准备
-================
-"""
-
-# windows安装依赖库:
-# Docker运行LDAP      https://github.com/osixia/docker-openldap
-# python-ldap下载地址: https://www.lfd.uci.edu/~gohlke/pythonlibs/#python-ldap
-# 安装命令:            pip install python_ldap-3.3.1-cp37-cp37m-win_amd64.whl
-# Ldapadmin可视化      http://www.ldapadmin.org/download/ldapadmin.html
+# Docker runs LDAP            https://github.com/osixia/docker-openldap
+# python-ldap download link:  https://www.lfd.uci.edu/~gohlke/pythonlibs/#python-ldap
+# Install command:            pip install python_ldap-3.3.1-cp37-cp37m-win_amd64.whl
+# Ldapadmin                   http://www.ldapadmin.org/download/ldapadmin.html
 
 from collections import OrderedDict
 
@@ -51,8 +44,8 @@ class LDAP:
 
     def add_user(self, entry: EntryDict):
         """
-        添加用户
-        :param entry: 条目
+        add user
+        :param entry: entry dict
         :return:
         """
         organization_unit = "People"
@@ -71,7 +64,7 @@ class LDAP:
 
     def query_by_uid(self, uid):
         """
-        按uid查找用户
+        Find users by uid
         :param uid:
         :return:
         """
@@ -79,7 +72,7 @@ class LDAP:
 
     def query_by_mail(self, mail):
         """
-        按mail查找用户
+        Find users by mail
         :param mail:
         :return:
         """
@@ -87,7 +80,7 @@ class LDAP:
 
     def query_params(self, params: dict):
         """
-        AND查询
+        AND query
         :param params:
         :return:
         """
@@ -99,8 +92,8 @@ class LDAP:
 
     def query(self, condition):
         """
-        查询操作
-        :param condition: 条件
+        Query operation
+        :param condition: 
         :return:
         """
         users = self.conn.search_s(f"ou=People,{LDAP_BASE_DN}", ldap.SCOPE_SUBTREE, condition)
@@ -108,7 +101,7 @@ class LDAP:
 
     def del_user(self, uid):
         """
-        删除用户
+        delete user
         :param uid:
         :return:
         """
@@ -118,14 +111,14 @@ class LDAP:
 
     def modify(self, uid, new_entry: EntryDict):
         """
-        修改操作
+        Modify operation
         :param uid:
-        :param new_entry: 新条目
+        :param new_entry: new entry
         :return:
         """
         dn = f"uid={uid},ou=People,{LDAP_BASE_DN}"
 
-        # 只要构建一个具有相同key的旧entry即可, 无需关心value是什么内容
+        # Just build an old entry with the same key, no need to care about what the value is
         old_entry = EntryDict()
         for k, v in new_entry.items():
             old_entry[k] = ["xxx"]
