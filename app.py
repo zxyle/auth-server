@@ -1,10 +1,12 @@
+# Flask App
+
 from flask import Flask
 from flask import jsonify, request, make_response
 
-from config import ENTRY_DEFAULT_PWD
-from encrypt import encrypt
-from ldap_operate import EntryDict, LDAP
-from wework import AccessToken, WeWorkUser
+from utils.config import USER_DEFAULT_PWD
+from utils.encrypt import encrypt
+from utils.ldap_operate import EntryDict, LDAP
+from utils.wework import AccessToken, WeWorkUser
 
 app = Flask(__name__)
 ldap = LDAP()
@@ -118,7 +120,7 @@ def add_uid():
     entry["mobile"] = mobile
     entry["objectclass"] = ['inetOrgPerson', 'posixAccount', 'top']
     entry["loginShell"] = "/bin/sh"
-    entry["userPassword"] = encrypt(ENTRY_DEFAULT_PWD)
+    entry["userPassword"] = encrypt(USER_DEFAULT_PWD)
     entry["employeeType"] = employee_type
     # The following key-value pairs are not supported
     # entry["gender"] = gender

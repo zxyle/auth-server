@@ -8,7 +8,7 @@ from collections import OrderedDict
 import ldap
 import ldap.modlist as mod_list
 
-from config import LDAP_URI, LDAP_BIND_PWD, LDAP_BASE_DN
+from utils.config import LDAP_URI, LDAP_BIND_PWD, LDAP_BASE_DN
 
 
 class EntryDict(OrderedDict):
@@ -60,11 +60,11 @@ class LDAP:
 
         # Its nice to the server to disconnect and free resources when done
         self.conn.unbind_s()
-        return "LDAP created."
+        return f"{uid} has been created in LDAP."
 
     def query_by_uid(self, uid):
         """
-        Find users by uid
+        Query user by uid
         :param uid:
         :return:
         """
@@ -72,7 +72,7 @@ class LDAP:
 
     def query_by_mail(self, mail):
         """
-        Find users by mail
+        Query user by mail
         :param mail:
         :return:
         """

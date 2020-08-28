@@ -1,9 +1,11 @@
+# Wework
+
 import json
 
 import requests
 
-from config import QUEUE, CORP_ID, APP_SECRET, APP_AGENT_ID
-from database import r
+from utils.config import REDIS_KEY, CORP_ID, APP_SECRET
+from utils.database import r
 
 
 def verify_response(body: dict):
@@ -12,7 +14,7 @@ def verify_response(body: dict):
 
 class AccessToken:
     # The redis key name that stores the access_token
-    token_queue = QUEUE
+    token_queue = REDIS_KEY
 
     # Get the token interface
     token_url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken"
@@ -137,7 +139,7 @@ class WeWorkDepartment:
 
     def create(self, name):
         """
-        
+        Create Department
         Document link: https://work.weixin.qq.com/api/doc/90000/90135/90205
         :param name: Department name
         :return:
@@ -158,7 +160,7 @@ class WeWorkDepartment:
 
     def update(self, dep_id):
         """
-        
+        Update Department info
         Document link: https://work.weixin.qq.com/api/doc/90000/90135/90206
         :param dep_id: Department id
         :return:
@@ -179,7 +181,7 @@ class WeWorkDepartment:
 
     def delete(self, dep_id):
         """
-        
+        Delete Department
         Document link: https://work.weixin.qq.com/api/doc/90000/90135/90207
         :param dep_id: Department id
         :return:
@@ -203,34 +205,3 @@ class WeWorkDepartment:
             # "id": "ID",
         }
         return requests.get(url, params).json()
-
-
-def send_msg(access_token, msg):
-    """
-    Send application message
-    Document link: https://open.work.weixin.qq.com/api/doc/90000/90135/90236
-    :param access_token:
-    :param msg: 
-    :return:
-    """
-    url = "https://qyapi.weixin.qq.com/cgi-bin/message/send"
-    params = {
-        "access_token": access_token,
-    }
-
-    form = {
-        "touser": "zhengx",
-        # "toparty": "PartyID1|PartyID2",
-        # "totag": "TagID1 | TagID2",
-        "msgtype": "text",
-        "agentid": APP_AGENT_ID,
-        "text": {
-            "content": msg
-        },
-        "safe": 0,
-        "enable_id_trans": 0,
-        "enable_duplicate_check": 0,
-        "duplicate_check_interval": 1800
-    }
-    response = requests.post(url, params=params, json=form)
-    print(response.text)

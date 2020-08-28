@@ -1,8 +1,5 @@
-"""
-================
-Encryption and decryption module
-================
-"""
+# Encryption and decryption module
+
 
 import base64
 import binascii
