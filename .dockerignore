@@ -1,0 +1,13 @@
+.git/
+.idea/
+__pycache__/
+.DS_Store
+venv/
+README.md
+.gitignore
+.github
+tests
+.env
+
+nginx
+docker-compose.yml

@@ -4,7 +4,7 @@ import json
 
 import requests
 
-from utils.config import REDIS_KEY, CORP_ID, APP_SECRET
+from config import REDIS_KEY, CORP_ID, APP_SECRET
 from utils.database import r
 
 

@@ -1,20 +1,23 @@
-# Flask App
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Author: Zheng <zxyful@gmail.com>
+# Date: 2020-08-30
+# Desc:
 
-from flask import Flask
 from flask import jsonify, request, make_response
 
-from utils.config import USER_DEFAULT_PWD
+from app.sdks.wework import AccessToken, WeWorkUser
+from config import USER_DEFAULT_PWD
 from utils.encrypt import encrypt
 from utils.ldap_operate import EntryDict, LDAP
-from utils.wework import AccessToken, WeWorkUser
+from . import auth_blue
 
-app = Flask(__name__)
 ldap = LDAP()
 token = AccessToken()
 wework_user = WeWorkUser()
 
 
-@app.route('/login', methods=['POST'])
+@auth_blue.route('/login', methods=['POST'])
 def login():
     """Normal login"""
     uid = request.form.get("uid")
@@ -33,7 +36,7 @@ def login():
     return body
 
 
-@app.route('/mail_login', methods=['POST'])
+@auth_blue.route('/mail_login', methods=['POST'])
 def mail_login():
     """Login via email"""
     mail = request.form.get("mail")
@@ -52,14 +55,14 @@ def mail_login():
     return body
 
 
-@app.route('/logout')
+@auth_blue.route('/logout')
 def logout():
     body = make_response("logout.")
     body.delete_cookie("uid")
     return body
 
 
-@app.route('/change_pwd', methods=["POST"])
+@auth_blue.route('/change_pwd', methods=["POST"])
 def change_pwd():
     """change password"""
     uid = request.form.get("uid")
@@ -72,7 +75,7 @@ def change_pwd():
     return result
 
 
-@app.route('/add', methods=["POST"])
+@auth_blue.route('/add', methods=["POST"])
 def add_uid():
     """Add user"""
     # Pinyin of name
@@ -89,7 +92,7 @@ def add_uid():
     mobile = request.form.get("mobile")
     # Department Number
     department = request.form.get("department", "1")
-    # Group 
+    # Group
     gid_number = request.form.get("gid_number")
     # Entry Date Format: 2018-05-20
     employee_type = request.form.get("employee_type")
@@ -136,7 +139,7 @@ def add_uid():
     return jsonify(body)
 
 
-@app.route('/del')
+@auth_blue.route('/del')
 def del_uid():
     """Delete user by uid"""
     uid = request.args.get("uid")
@@ -155,7 +158,7 @@ def del_uid():
     return jsonify(body)
 
 
-@app.route('/search')
+@auth_blue.route('/search')
 def search_uid():
     uid = request.args.get("uid")
     users = ldap.query_by_uid(uid)
@@ -174,7 +177,3 @@ def search_uid():
         # "gender": entry.gender
     }
     return jsonify({"info": info})
-
-
-if __name__ == '__main__':
-    app.run()

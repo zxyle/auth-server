@@ -1,0 +1,53 @@
+version: '3'
+services:
+  web:
+    build: .
+    environment:
+      FLASK_APP: main.py
+      FLASK_ENV: production
+    restart: always
+    command: gunicorn -c gunicorn.conf.py main:app
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - ./data/uploads:/uploads
+    depends_on:
+      - redis
+      - ldap
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000/ping" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      #start_period: 40s
+
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - "80:80"
+    links:
+      - web
+    volumes:
+      - ./app/static:/staticfile
+
+  redis:
+    image: redis:4.0
+    restart: always
+    command: --appendonly yes
+    volumes:
+      - ./data/redis_data/:/data/
+
+  ldap:
+    image: osixia/openldap:1.4.0
+    ports:
+      - "389:389"
+      - "636:636"
+    environment:
+      LDAP_ORGANISATION: "My Company"
+      LDAP_DOMAIN: "my-company.com"
+      LDAP_ADMIN_PASSWORD: "admin123"
+
+
