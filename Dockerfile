@@ -4,9 +4,8 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 
-RUN apt-get update -y
-
-RUN apt-get install -y    libssl-dev
+RUN sed -i s@/deb.debian.org/@/mirrors.aliyun.com/@g /etc/apt/sources.list && \
+    sed -i s@/security.debian.org/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 
 RUN apt-get update && apt-get install -y \
         libsasl2-dev\
