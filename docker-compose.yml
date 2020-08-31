@@ -12,6 +12,7 @@ services:
     volumes:
       - .:/usr/src/app
       - ./data/uploads:/uploads
+      - ./data/logs:/tmp
     depends_on:
       - redis
       - ldap

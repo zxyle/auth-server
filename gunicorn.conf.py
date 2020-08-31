@@ -18,10 +18,10 @@ daemon = False
 reload = True
 
 # process id
-pidfile = "/tmp/flask_server.pid"
+pidfile = "/tmp/auth_server.pid"
 
 # logfile
-errorlog = "/tmp/flask_server.err"
+errorlog = "/tmp/auth_server.err"
 
 # the Access log file to write to.
-accesslog = "/tmp/flask_server.log"
+accesslog = "/tmp/auth_server.log"

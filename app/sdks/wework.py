@@ -1,11 +1,15 @@
 # Wework
 
 import json
+import os
 
 import requests
 
-from config import REDIS_KEY, CORP_ID, APP_SECRET
-from utils.database import r
+from config import REDIS_KEY
+from app.utils.database import r
+
+CORP_ID = os.getenv("WEWORK_CORP_ID")
+APP_SECRET = os.getenv("WEWORK_APP_SECRET")
 
 
 def verify_response(body: dict):
