@@ -42,6 +42,7 @@ services:
 
   ldap:
     image: osixia/openldap:1.4.0
+    # If you need external access to ldap, please uncomment ports section
     ports:
       - "389:389"
       - "636:636"

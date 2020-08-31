@@ -17,4 +17,10 @@ def create_app():
     from .auth import auth_blue
     app.register_blueprint(auth_blue, url_prefix='/user')
 
+    from .main import main_blue
+    app.register_blueprint(main_blue)
+
+    from .admin import admin_blue
+    app.register_blueprint(admin_blue, url_prefix='/admin')
+
     return app

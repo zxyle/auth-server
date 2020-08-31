@@ -2,7 +2,7 @@
 
 
 # redis configuration info
-REDIS_HOST = "127.0.0.1"
+REDIS_HOST = "redis"
 REDIS_PORT = 6379
 REDIS_DB = 0
 REDIS_PWD = None
@@ -18,7 +18,8 @@ APP_SECRET = ""
 CORP_ID = ""
 
 # LDAP configuration info
-LDAP_URI = "ldap://192.168.1.193:389"
-LDAP_BASE_DN = "cn=admin,dc=example,dc=org"
+# The variables here need to be consistent with the environment variables in docker-compose.yml
+LDAP_URI = "ldap://ldap:389"
+LDAP_BASE_DN = "cn=admin,dc=my-company,dc=com "
 LDAP_BIND_PWD = "admin"
-USER_DEFAULT_PWD = "123456"
+USER_DEFAULT_PWD = "admin123"
