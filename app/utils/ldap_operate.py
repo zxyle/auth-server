@@ -8,7 +8,7 @@ from collections import OrderedDict
 import ldap
 import ldap.modlist as mod_list
 
-from config import LDAP_URI, LDAP_BIND_PWD, LDAP_BASE_DN
+from config import LDAP_URI, LDAP_BIND_PWD, LDAP_BASE_DN, LDAP_BIND_DN
 
 
 class EntryDict(OrderedDict):
@@ -40,7 +40,7 @@ class User:
 class LDAP:
     def __init__(self):
         self.conn = ldap.initialize(LDAP_URI)
-        self.conn.simple_bind_s(LDAP_BASE_DN, LDAP_BIND_PWD)
+        self.conn.simple_bind_s(LDAP_BIND_DN, LDAP_BIND_PWD)
 
     def add_user(self, entry: EntryDict):
         """

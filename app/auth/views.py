@@ -7,9 +7,9 @@
 from flask import jsonify, request, make_response
 
 from app.sdks.wework import AccessToken, WeWorkUser
-from config import USER_DEFAULT_PWD
-from app.utils import encrypt
+from app.utils.encrypt import encrypt
 from app.utils.ldap_operate import EntryDict, LDAP
+from config import USER_DEFAULT_PWD
 from . import auth_blue
 
 ldap = LDAP()
