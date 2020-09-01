@@ -35,7 +35,7 @@ jobs:
     - name: Write env file
       uses: zxyle/write-env-action@v2
       with:
-          service_account_email: ${{ secrets.env_file_content }}
+          env_file_content: ${{ secrets.env_file_content }}
     - name: Docker Compose
       run: |
         docker-compose up -d --build
