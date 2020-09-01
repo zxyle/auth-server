@@ -2,23 +2,23 @@
 
 ## Intro
 A unified identity authentication system based on `LDAP` and [wework](https://work.weixin.qq.com/). 
-Will support dingtalk and feishu in the future.
+Will support [dingtalk](https://ding-doc.dingtalk.com/) and [feishu](https://open.feishu.cn/) in the future.
 
 ## Quick Start
 Compose is a tool for defining and running multi-container Docker applications.
 Here is its [documentation](https://docs.docker.com/compose/)
 
-### Run
+### Build & Run
 ```
 docker-compose up -d --build
 ```
 
-### Browse
+### Test & Browse
 ```
 curl http://127.0.0.1/ping
 ```
 
-### Restart
+### Restart Containers Group:
 ```
 docker-compose restart
 ```
